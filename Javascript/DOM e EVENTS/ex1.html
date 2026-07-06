@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Contador Simples</title>
+    <style>
+        body { text-align: center; font-family: sans-serif; margin-top: 50px; }
+        #numero { font-size: 50px; color: red; } /* Começa em 0 (vermelho) */
+        button { font-size: 20px; margin: 5px; padding: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h1>Contador</h1>
+    <div id="numero">0</div>
+
+    <button id="menos">-1</button>
+    <button id="reset">Resetar</button>
+    <button id="mais">+1</button>
+
+    <script>
+        // 1. Pegar os elementos da tela
+        const txtNumero = document.getElementById('numero');
+        const btnMenos = document.getElementById('menos');
+        const btnReset = document.getElementById('reset');
+        const btnMais = document.getElementById('mais');
+
+        let valor = 0; // Variável que guarda o número atual
+
+        // 2. Função que atualiza o texto e a cor na tela
+        function atualizar() {
+            txtNumero.textContent = valor;
+            
+            // Bônus: Muda a cor dependendo do valor
+            if (valor > 0) {
+                txtNumero.style.color = 'green';
+            } else {
+                txtNumero.style.color = 'red';
+            }
+        }
+
+        // 3. Eventos dos botões
+        btnMais.addEventListener('click', () => {
+            valor++;
+            atualizar();
+        });
+
+        btnMenos.addEventListener('click', () => {
+            if (valor > 0) { // Garante que não fica negativo
+                valor--;
+                atualizar();
+            }
+        });
+
+        btnReset.addEventListener('click', () => {
+            valor = 0;
+            atualizar();
+        });
+    </script>
+</body>
+</html>

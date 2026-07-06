@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Lista</title>
+    </head>
+
+    <body>
+        <input type="text" name="item">
+        <button>Enviar</button>
+        <ul></ul>
+    </body>
+
+    <script>
+        const input = document.querySelector('input');
+        const btn = document.querySelector('button');
+        const ul = document.querySelector('ul');
+
+        btn.addEventListener('click', () =>{
+           const texto = input.value.trim();
+           if (texto !== ''){
+            const li = document.createElement('li');
+            li.innerHTML = `<span>${texto}</span>`;
+            ul.appendChild(li);
+            input.value = ''
+           }
+           else{
+            alert("Digite algo:")
+           }
+        });
+
+        input.addEventListener('keypress', (e)=>{
+            if (e.key === 'Enter') btn.click();
+        })
+    </script>
+</html>

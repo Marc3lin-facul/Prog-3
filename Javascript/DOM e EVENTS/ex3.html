@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Validação</title>
+</head>
+<body>
+
+    <form id="formulario">
+        <input type="text" id="nome" placeholder="Nome (mín. 3)"><br><br>
+        <input type="email" id="email" placeholder="Email (deve ter @)"><br><br>
+        <input type="password" id="senha" placeholder="Senha (mín. 6)"><br><br>
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script>
+        const nome = document.getElementById('nome');
+        const email = document.getElementById('email');
+        const senha = document.getElementById('senha');
+        const form = document.getElementById('formulario');
+
+        // Validação em tempo real (muda a cor do fundo do input)
+        nome.addEventListener('input', () => {
+            nome.style.background = nome.value.trim().length >= 3 ? 'lightgreen' : 'lightcoral';
+        });
+
+        email.addEventListener('input', () => {
+            email.style.background = email.value.includes('@') ? 'lightgreen' : 'lightcoral';
+        });
+
+        senha.addEventListener('input', () => {
+            senha.style.background = senha.value.length >= 6 ? 'lightgreen' : 'lightcoral';
+        });
+
+        // Bloqueia o envio se houver erros
+        form.addEventListener('submit', (e) => {
+            if (nome.value.trim().length < 3 || !email.value.includes('@') || senha.value.length < 6) {
+                e.preventDefault();
+                alert("Preencha corretamente!");
+            }
+        });
+    </script>
+
+</body>
+</html>

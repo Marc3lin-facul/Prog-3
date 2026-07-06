@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Busca de CEP</title>
+        <style>
+            /* Spinner de Carregamento */
+            .spinner {
+                border: 4px solid rgba(0, 0, 0, 0.1);
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                border-left-color: #09f;
+                animation: spin 1s linear infinite;
+                margin: 10px 0;
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+            .erro { color: red; }
+            
+            /* Estilo simples para o Histórico */
+            #historicoContainer { margin-top: 20px; border-top: 1px solid #ccc; padding-top: 10px; }
+            .item-historico { background: #f0f0f0; padding: 5px; margin: 5px 0; border-left: 4px solid #09f; }
+        </style>
+    </head>
+    <body>
+        <input id='cep' placeholder="Digite o CEP">
+        <button id='buscar'>Buscar</button>
+        
+        <div id='resultado'></div>
+
+        <div id="historicoContainer">
+            <h3>Últimos 5 CEPs Buscados</h3>
+            <button id="limparHistorico">Limpar Histórico</button>
+            <div id="listaHistorico"></div>
+        </div>
+
+        <script>
+            const inputCEP = document.querySelector('#cep');
+            const btnBuscar = document.querySelector('#buscar');
+            const divResult = document.querySelector('#resultado');
+            const btnLimpar = document.querySelector('#limparHistorico');
+            const divListaHistorico = document.querySelector('#listaHistorico');
+            
+            // Iniciamos o histórico como um array vazio para receber os novos objetos retornados pela API
+            let historico = [];
+
+            async function buscar() {
+                const cep = inputCEP.value.replace(/\D/g, ''); 
+                
+                if (cep.length !== 8) {
+                    divResult.innerHTML = '<p class="erro">CEP deve ter 8 dígitos</p>';
+                    return;
+                }
+                
+                // Exibe o Loading Spinner na tela
+                divResult.innerHTML = '<div class="spinner"></div>';
+                
+                try {
+                    const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                    const dados = await res.json();
+                    
+                    if (dados.erro) throw new Error('CEP não encontrado');
+
+                    // Mostra o resultado atual
+                    divResult.innerHTML = `
+                        <p><strong>${dados.logradouro}</strong></p>
+                        <p>${dados.bairro} — ${dados.localidade}/${dados.uf}</p>
+                    `;
+                    
+                    // Adiciona o objeto completo dos dados retornados ao início do array
+                    historico.unshift(dados);
+
+                    // Trava o array para manter apenas as últimas 5 buscas
+                    if (historico.length > 5) {
+                        historico.splice(5); // Remove tudo que passar do índice 5
+                    }
+
+                    // Atualiza a visualização do histórico na tela
+                    atualizarHistoricoTela();
+
+                } catch (e) {
+                    divResult.innerHTML = `<p class='erro'>${e.message}</p>`;
+                }
+                inputCEP.value = ''
+            }
+
+            // Função responsável por ler o array de objetos e renderizar no HTML
+            function atualizarHistoricoTela() {
+                divListaHistorico.innerHTML = ''; // Limpa a tela anterior
+                
+                historico.forEach(item => {
+                    divListaHistorico.innerHTML += `
+                        <div class="item-historico">
+                            <strong>${item.cep}</strong> - ${item.logradouro}, ${item.localidade}/${item.uf}
+                        </div>
+                    `;
+                });
+            }
+
+            // Ação do Botão Limpar
+            btnLimpar.addEventListener('click', () => {
+                historico = []; // Esvazia o array
+                divListaHistorico.innerHTML = ''; // Limpa o HTML da tela
+                divResult.innerHTML = ''; // Opcional: limpa o último resultado exibido
+            });
+
+            btnBuscar.addEventListener('click', buscar);
+            inputCEP.addEventListener('keydown', e => e.key==='Enter' && buscar());
+        </script>
+    </body>
+</html>

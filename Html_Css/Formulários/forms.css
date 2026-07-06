@@ -1,0 +1,84 @@
+/*Seletor de elemento*/
+body {
+    background-color: antiquewhite;
+    margin: 40px;
+}
+
+/*Seletor de elemento*/
+h1 {
+    font-family: Courier, Arial, Helvetica, sans-serif;
+    font-size: large;
+}
+
+/*Seletor de elemento*/
+div {
+    background-color: rgb(205, 203, 203);
+    border-radius: 5px;
+    padding: 20px;
+}
+
+/* 4. Seletor de atributo + elemento*/
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+input[type="search"],
+select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+select{
+    cursor: pointer;
+}
+
+button{
+    background-color: coral;
+    width: 50%;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px ;
+    cursor: pointer;
+}
+/*Seletor de elemento + pseudo-classe*/
+button:hover {
+    background-color: rgb(209, 89, 89);
+    width: 50%;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px ;
+}
+
+/*Seletor de classe*/
+.destaque {
+    border: 2px solid blue;
+}
+
+/*Seletor de ID*/
+#principal {
+    box-shadow: 2px 2px 8px gray;
+}
+
+/*Seletor universal*/
+* {
+    box-sizing: border-box;
+}
+
+/*Seletor descendente*/
+div input {
+    margin-bottom: 10px;
+}
+
+/*Pseudo-classe*/
+input:focus {
+    outline: none;
+    border: 2px solid coral;
+}
+
+input[type="checkbox"]:checked{
+    accent-color: green;
+}

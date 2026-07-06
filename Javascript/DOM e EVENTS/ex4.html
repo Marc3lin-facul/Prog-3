@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Galeria de Fotos</title>
+        <style>
+            /* Centraliza todo o conteúdo da página */
+            body {
+                text-align: center;
+                font-family: Arial, sans-serif;
+                padding-top: 50px;
+            }
+
+            /* Estilo padrão das imagens */
+            img {
+                width: 400px; 
+                height: 400px;
+                margin: 10px;
+                transition: all 0.3s ease; /* Deixa a transição do zoom suave */
+                cursor: pointer;
+            }
+
+            /* Estilo para quando a imagem for clicada e destacada */
+            .destaque {
+                width: 450px; /* Fica maior */
+                height: 450px; /* Fica maior */
+                border: 5px solid #ff0000; /* Borda em volta */
+                box-shadow: 0px 4px 15px rgba(0,0,0,0.3); /* Sombra para dar profundidade */
+            }
+
+            /* Estilização básica dos botões */
+            .controles {
+                margin-top: 20px;
+            }
+            button {
+                padding: 10px 20px;
+                font-size: 16px;
+                cursor: pointer;
+                margin: 0 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Galeria de Marcelo</h1>
+        <img src="" id="img1">
+        <img src="" id="img2">
+        <img src="" id="img3">
+        
+        <div class="controles">
+            <button id='anterior'>Anterior</button>
+            <button id='proximo'>Próximo</button>
+        </div>
+
+        <script>
+            const galeria = [
+                './imagens/choso.png',
+                './imagens/1403574.png',
+                './imagens/Captura de Tela (1).png',
+                './imagens/Captura de Tela (2).png'
+            ]
+            const img = document.getElementById('img1');
+            const img2 = document.getElementById('img2');
+            const img3 = document.getElementById('img3'); 
+            const btnProximo = document.getElementById('proximo');
+            const btnAnterior = document.getElementById('anterior');
+
+            let contador = 2;
+
+            img.src = galeria[contador - 2]; 
+            img2.src = galeria[contador - 1]; 
+            img3.src = galeria[contador];     
+
+            // FUNÇÃO PARA GERENCIAR O DESTAQUE
+            function destacarImagem(imagemClicada) {
+                // Remove o destaque de qualquer imagem que já esteja destacada
+                img.classList.remove('destaque');
+                img2.classList.remove('destaque');
+                img3.classList.remove('destaque');
+                
+                // Adiciona o destaque apenas na imagem que recebeu o clique
+                imagemClicada.classList.add('destaque');
+            }
+
+            // FUNÇÃO PARA LIMPAR O DESTAQUE (usada ao mudar de página)
+            function limparDestaque() {
+                img.classList.remove('destaque');
+                img2.classList.remove('destaque');
+                img3.classList.remove('destaque');
+            }
+
+            // Ouvintes de clique para cada imagem individualmente
+            img.addEventListener('click', () => destacarImagem(img));
+            img2.addEventListener('click', () => destacarImagem(img2));
+            img3.addEventListener('click', () => destacarImagem(img3));
+
+            // Botões de navegação atualizados para limparem o destaque antigo ao mudar as fotos
+            btnProximo.addEventListener('click', () =>{
+                if (contador < galeria.length - 1) {
+                    contador++;
+                    limparDestaque();
+                    img.src = galeria[contador - 2];
+                    img2.src = galeria[contador - 1];
+                    img3.src = galeria[contador];
+                }
+            })
+
+            btnAnterior.addEventListener('click', ()=>{
+                if (contador > 2) {
+                    contador--;
+                    limparDestaque();
+                    img.src = galeria[contador - 2];
+                    img2.src = galeria[contador - 1];
+                    img3.src = galeria[contador];
+                }
+            })
+        </script>
+    </body>
+</html>

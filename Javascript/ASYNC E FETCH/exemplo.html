@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <input id='cep'>
+        <button id='buscar'>Buscar</button>
+        <div id='resultado'></div>
+
+        <script>
+            const inputCEP = document.querySelector('#cep');
+            const btnBuscar = document.querySelector('#buscar');
+            const divResult = document.querySelector('#resultado');
+            async function buscar() {
+                const cep = inputCEP.value.replace(/\D/g, ''); // remove não-dígitos
+                if (cep.length !== 8) {
+                    divResult.innerHTML = '<p class="erro">CEP deve ter 8 dígitos</p>';
+                    return;
+                }
+                divResult.innerHTML = '<p> Buscando...</p>';
+                try {
+                    const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                    const dados = await res.json();
+                    if (dados.erro) throw new Error('CEP não encontrado');
+                    divResult.innerHTML = `
+                        <p><strong>${dados.logradouro}</strong></p>
+                        <p>${dados.bairro} — ${dados.localidade}/${dados.uf}</p>
+                    `;
+                    } catch (e) {
+                        divResult.innerHTML = `<p class='erro'>${e.message}</p>`;
+                    }
+            }
+            btnBuscar.addEventListener('click', buscar);
+            inputCEP.addEventListener('keydown', e => e.key==='Enter' && buscar());
+        </script>
+    </body>
+</html>

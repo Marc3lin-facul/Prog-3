@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Buscar CEP</title>
+</head>
+<body>
+    <input type="text" maxlength="8" placeholder="Digite o CEP...">
+    <button>Buscar</button>
+    <div id="resultado"></div>
+
+    <script>
+        const cep = document.querySelector('input');
+        const btn = document.querySelector('button');
+        const div = document.querySelector('div');
+
+        async function buscarCEP() {
+            // CORREÇÃO 1: Usar .value para pegar o texto do input
+            const valorCep = cep.value.replace(/\D/g, ''); // Remove traços ou espaços
+
+            if (valorCep.length !== 8){
+                div.innerHTML = '<p style="color: red;">CEP precisa ter 8 dígitos</p>';
+                return;
+            }
+
+            div.innerHTML = '<p>Buscando...</p>';
+
+            try {
+                // CORREÇÃO 2: Passar valorCep na URL
+                const res = await fetch(`https://viacep.com.br/ws/${valorCep}/json/`);
+                const dados = await res.json();
+
+                if (dados.erro) {
+                    throw new Error("CEP não encontrado");
+                }
+
+                div.innerHTML = `
+                    <p><strong>${dados.logradouro}</strong></p>
+                    <p>${dados.bairro} — ${dados.localidade}/${dados.uf}</p>
+                `;
+            } catch (e) {
+                // CORREÇÃO 3: Usar a variável 'div' correta em vez de 'divResult'
+                div.innerHTML = `<p class='erro' style="color: red;">${e.message}</p>`;
+            }
+        }
+
+        btn.addEventListener('click', buscarCEP);
+        cep.addEventListener('keydown', e => e.key === 'Enter' && buscarCEP());
+    </script>
+</body>
+</html>

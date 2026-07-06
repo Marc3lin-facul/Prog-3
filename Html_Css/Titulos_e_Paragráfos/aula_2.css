@@ -1,0 +1,33 @@
+body{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    background-color: #281919;
+}
+.inicio{
+    background-color: #d0e6ff;;
+    padding: 20px;
+    margin-bottom: 35px;
+    border-radius: 10px;
+    text-align: center;
+}
+.titulos{
+    background-color: #d0e6ff;;
+    padding: 20px;
+    margin-bottom: 35px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.paragrafos {
+    background-color: #d0e6ff;;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 40px;
+}
+
+.assinatura{
+    background-color: #d0e6ff;;
+    padding: 20px;
+    margin-bottom: 40px;
+    border-radius: 10px;
+    text-align: center;
+}

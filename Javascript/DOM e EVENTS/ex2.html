@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Lista de Compras</title>
+    </head>
+
+    <body>
+    <h1>Sua lista de Compras</h1>
+    <input id="p" placeholder="O que deseja adicionar na sua lista?">
+    
+    <div class="botoes-acao">
+        <button id="adicionar">Adicionar</button>
+        <button id="limpar-tudo">Limpar Tudo</button>
+    </div>
+
+    <ul id="lista"></ul>
+
+    <script>
+        const btnAdicionar = document.getElementById('adicionar');
+        const btnLimparTudo = document.getElementById('limpar-tudo');
+        const ul = document.getElementById('lista');
+        const input = document.getElementById('p');
+
+        // 1. ADICIONAR ITEM (Criando a estrutura com o botão X embutido)
+        btnAdicionar.addEventListener('click', () => {
+            const texto = input.value.trim();
+            
+            if (texto !== "") {
+                const li = document.createElement('li');
+                
+                // Usamos innerHTML para estruturar o texto e o botão de fechar juntos
+                li.innerHTML = `
+                    <span>${texto}</span>
+                    <button class="btn-remover">✕</button>
+                `;
+                
+                ul.appendChild(li);
+                
+                input.value = "";
+                input.focus();
+            } else {
+                alert("Digite algo!");
+            }
+        });
+
+        // 2. REMOVER ITEM INDIVIDUAL (Aplicando Event Delegation)
+        ul.addEventListener('click', (evento) => {
+            // Verifica se o elemento que foi clicado lá dentro tem a classe 'btn-remover'
+            if (evento.target.classList.contains('btn-remover')) {
+                // evento.target é o botão ✕. O .parentElement dele é a tag <li> inteira.
+                const liAlvo = evento.target.parentElement;
+                liAlvo.remove(); // Remove a linha da lista
+            }
+        });
+
+        // 3. LIMPAR TUDO
+        btnLimparTudo.addEventListener('click', () => {
+            ul.innerHTML = ""; // Remove de uma vez todos os nós filhos de dentro da UL
+        });
+
+        // Atalho do Enter
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') btnAdicionar.click();
+        });
+    </script>
+</body>
+</html>
